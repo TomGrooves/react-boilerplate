@@ -8,6 +8,7 @@ function Navbar(){
             <ul>
             <Link className={Style.link} to="/">Forside</Link>
             <Link className={Style.link} to="/hoteller">Hoteller</Link>
+            <Link className={Style.link} to="/login">Login</Link>
             </ul>
         </nav>
     )

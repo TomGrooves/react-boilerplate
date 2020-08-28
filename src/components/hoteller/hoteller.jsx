@@ -7,6 +7,8 @@ function Hoteller(props){
     const [countries, setCountries] = useState([])
     const [countryID, setCountryID] = useState(0)
     const [cities, setCities] = useState([])
+    const [hotels, setHotels] = useState([])
+    const [cityID, setCityID] = useState(0)
 
     // Funktion til at fetche lande
     async function fetchCountries(){
@@ -22,6 +24,13 @@ function Hoteller(props){
         setCities(data)
     }
 
+    // Funktion til at fetche hoteller med en by's ID
+    async function fetchHotels(id){
+        const url = `https://api.mediehuset.net/overlook/hotels/by_city/${id}`
+        let data = await props.doFetch(url)
+        setHotels(data)
+    }
+
     // UseEffect med et tomt dependency array (kører kun en gang når component mounter)
     useEffect(() => {
         fetchCountries()
@@ -34,13 +43,19 @@ function Hoteller(props){
         }
     }, [countryID])
 
-    console.log(cities)
+    // UseEffect til at fetche hotels, kører når City ID ændrer sig
+    useEffect(() => {
+        if (!cityID == 0){
+            fetchHotels(cityID)
+        }
+    }, [cityID])
 
     // Returner HTML
     return (
         <>
             <h1>Lande</h1>
-            {countries.items && countries.items.map((item, i) => {
+
+            {!cities.items && countries.items && countries.items.map((item, i) => {
                 return (
                     <div key={i} className={Style.wrapper}>
                         <h2>{item.name}</h2>
@@ -48,7 +63,24 @@ function Hoteller(props){
                     </div>
                 )
             })}
-            
+
+            {!hotels.items && cities.items && cities.items.map((item, i) => {
+                return (
+                    <div key={i} className={Style.wrapper}>
+                        <h2>{item.name}</h2>
+                        <img id={item.id} onClick={(e)=>{setCityID(e.target.id)}} src={item.image}></img>
+                    </div>
+                )
+            })}          
+
+            {hotels.items && hotels.items.map((item, i) => {
+                return (
+                    <div key={i} className={Style.wrapper}>
+                        <h2>{item.title}</h2>
+                        <img id={item.id} onClick={(e)=>{console.log(e.target.id)}} src={item.image}></img>
+                    </div>
+                )
+            })}          
         </>
     )
 }
