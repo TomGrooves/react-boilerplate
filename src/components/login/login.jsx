@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
-function Login(){
+function Login(props){
 
     // Ha lavet en form
     // sendt det formdata til API
@@ -35,10 +35,17 @@ function Login(){
            console.log(error)
         }
       }    
+
+      function logOut(e){
+          e.preventDefault()
+          sessionStorage.removeItem("token")
+          props.setLoginData([])
+      }
     
       //useEffect til at gemme token i sessionstorage, når token er modtaget, så den kan hentes i App.js
       useEffect(() => {
         if (token.user_id){
+            props.setLoginData(token)
             sessionStorage.setItem("token", JSON.stringify(token))
         }
       }, [token])
@@ -47,15 +54,23 @@ function Login(){
     return (
         <>
             <h1>Login side</h1>
-            {sessionStorage.getItem("token") && <span>Du er nu logget ind</span>}
+            {props.loginData.user_id && <span>Du er nu logget ind</span>}
             <form>
-                <label>Brugernavn</label>
-                <input value={username} onClick={()=>{setUsername("")}} onChange={(e)=>{setUsername(e.target.value)}}></input>
-                
-                <label>Password</label>
-                <input type="password" value={password} onClick={()=>{setPassword("")}} onChange={(e)=>{setPassword(e.target.value)}}></input>
-                
-                <button onClick={(e)=>{getToken(e)}}>Login</button>
+                {!props.loginData.user_id &&
+                 <>
+                    <label>Brugernavn</label>
+                    <input value={username} onClick={()=>{setUsername("")}} onChange={(e)=>{setUsername(e.target.value)}}></input>
+                    
+                    <label>Password</label>
+                    <input type="password" value={password} onClick={()=>{setPassword("")}} onChange={(e)=>{setPassword(e.target.value)}}></input>
+                    
+                    <button onClick={(e)=>{getToken(e)}}>Log ind</button>
+                </>
+                }
+                {props.loginData.user_id && 
+                    <button onClick={(e)=>{logOut(e)}}>Log ud</button>
+                }
+
             </form>
         </>
     )

@@ -59,7 +59,7 @@ function Hoteller(props){
                 return (
                     <div key={i} className={Style.wrapper}>
                         <h2>{item.name}</h2>
-                        <img id={item.id} onClick={(e)=>{setCountryID(e.target.id)}} src={item.image}></img>
+                        <img alt={item.title} id={item.id} onClick={(e)=>{setCountryID(e.target.id)}} src={item.image}></img>
                     </div>
                 )
             })}
@@ -68,7 +68,7 @@ function Hoteller(props){
                 return (
                     <div key={i} className={Style.wrapper}>
                         <h2>{item.name}</h2>
-                        <img id={item.id} onClick={(e)=>{setCityID(e.target.id)}} src={item.image}></img>
+                        <img alt={item.title} id={item.id} onClick={(e)=>{setCityID(e.target.id)}} src={item.image}></img>
                     </div>
                 )
             })}          
@@ -77,7 +77,7 @@ function Hoteller(props){
                 return (
                     <div key={i} className={Style.wrapper}>
                         <h2>{item.title}</h2>
-                        <img id={item.id} onClick={(e)=>{console.log(e.target.id)}} src={item.image}></img>
+                        <img alt={item.title} id={item.id} onClick={(e)=>{console.log(e.target.id)}} src={item.image}></img>
                     </div>
                 )
             })}          
