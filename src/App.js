@@ -1,26 +1,53 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import Forside from './components/forside/forside';
+import Navbar from './components/navbar/navbar';
+import Hoteller from './components/hoteller/hoteller';
+
+// Forside
+
+// Lande
+
+// Hoteller
+
+
 
 function App() {
+  
+  // Funktion til at lave fetch - sendes med ind i de komponenter der skal fetche
+  async function doFetch(url){
+    try {
+      const response = await fetch(url)
+      const data = await response.json()
+      return data
+    }
+    catch (error){
+       console.log(error)
+    }
+  }
+
+  // Router med routes der renderer vores componenter
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+        <Navbar/>
+          <Switch>
+          
+          <Route path="/hoteller">
+            <Hoteller doFetch={doFetch}/>
+          </Route>
+          
+          <Route path="/">
+            <Forside/>    
+          </Route>
+
+        
+        </Switch>
+    </Router>
+  )
 }
 
 export default App;
